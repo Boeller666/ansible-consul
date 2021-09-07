@@ -1,0 +1,10 @@
+---
+# tasks file for ansible-consul
+- name: install prerequisites
+  ansible.builtin.package:
+    name: "{{ PACKAGES }}"
+    state: present
+  become: true
+
+- name: install consul
+  include_tasks: tasks/install_consul.yaml

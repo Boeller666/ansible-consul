@@ -1,0 +1,46 @@
+---
+- name: install | download checksum
+  ansible.builtin.slurp:
+    src: "{{ CONSUL_CHECKSUM_URL }}"
+  register: consul_checksum
+
+- name: install | download nomad
+  ansible.builtin.get_url:
+    url: "{{ CONSUL_DOWNLOAD_URL }}"
+    dest: /tmp/consul.zip
+    checksum: "{{ consul_checksum }}"
+
+- name: install | unarchive consul
+  ansible.builtin.unarchive:
+    src: "/tmp/consul.zip"
+    dest: /usr/local/bin/
+    group: root
+    owner: root
+  become: true
+
+- name: install | check for consul autocomplete
+  lineinfile:
+    path: /root/.bashrc
+    regexp: '^complete -C.*consul$'
+    state: absent
+  check_mode: yes
+  changed_when: false
+  register: consul_autocomplete
+  become: true
+
+- name: install | install consul autocomplete
+  ansible.builtin.command: consul -autocomplete-install
+  when: not consul_autocomplete.found
+  become: true
+
+# - name: install | install consul autocomplete
+#   ansible.builtin.command: 
+#     cmd: complete -C /usr/local/bin/consul consul
+#   become: true
+
+- name: install | create nomad data dir
+  ansible.builtin.file:
+    path: /opt/nomad
+    state: directory
+    mode: '0755'
+  become: true

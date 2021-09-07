@@ -1,0 +1,23 @@
+---
+- name: configure | create consul daemon folder
+  ansible.builtin.file:
+    path: /etc/consul.d
+    state: directory
+    mode: '0700'
+  become: true
+
+- name: configure | add consul user
+  ansible.builtin.user:
+    name: consul
+    shell: /bin/false
+    home: /etc/consul.d
+    system: yes
+
+- name: install | create consul data dir
+  ansible.builtin.file:
+    path: /opt/consul
+    group: consul
+    owner: consul
+    state: directory
+    mode: '0755'
+  become: true
