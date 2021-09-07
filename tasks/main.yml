@@ -7,4 +7,7 @@
   become: true
 
 - name: install consul
-  include_tasks: tasks/install_consul.yaml
+  include_tasks: tasks/install.yaml
+
+- name: configure consul
+  include_tasks: tasks/configure.yaml
