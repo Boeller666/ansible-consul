@@ -1,14 +1,9 @@
 ---
-- name: install | download checksum
-  ansible.builtin.slurp:
-    src: "{{ CONSUL_CHECKSUM_URL }}"
-  register: consul_checksum
-
 - name: install | download nomad
   ansible.builtin.get_url:
     url: "{{ CONSUL_DOWNLOAD_URL }}"
     dest: /tmp/consul.zip
-    checksum: "{{ consul_checksum }}"
+    checksum: "sha256:{{ CONSUL_CHECKSUM_URL }}"
 
 - name: install | unarchive consul
   ansible.builtin.unarchive:
@@ -16,6 +11,7 @@
     dest: /usr/local/bin/
     group: root
     owner: root
+    remote_src: yes
   become: true
 
 - name: install | check for consul autocomplete
