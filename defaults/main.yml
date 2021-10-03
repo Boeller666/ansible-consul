@@ -1,2 +1,10 @@
 ---
 # defaults file for ansible-consul
+CONSUL_VERSION: 1.8.0
+CONSUL_FILENAME: consul_{{ CONSUL_VERSION }}_linux_amd64.zip
+CONSUL_DOWNLOAD_URL: https://releases.hashicorp.com/consul/{{ CONSUL_VERSION }}/{{ CONSUL_FILENAME }}
+CONSUL_CHECKSUM_URL: https://releases.hashicorp.com/consul/{{ CONSUL_VERSION }}/consul_{{ CONSUL_VERSION }}_SHA256SUMS
+
+PACKAGES:
+  - curl
+  - unzip

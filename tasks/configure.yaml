@@ -21,3 +21,17 @@
     state: directory
     mode: '0755'
   become: true
+
+# TODO: prepare security credentials
+
+# TODO: configure consul agents
+- name: configure | create consul agent config
+  ansible.builtin.template:
+    src: etc/consul.d/consul.hcl.j2
+    dest: /etc/consul.d/consul.hcl
+    group: consul
+    owner: consul
+    mode: '640'
+  become: true
+
+# TODO: configure consul servers
